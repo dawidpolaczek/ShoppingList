@@ -7,8 +7,6 @@ namespace ShoppingList.Models
         public int Id { get; set; }
         public string Name { get; set; } = null!;
         public DayOfWeek? DayOfWeek { get; set; }
-        [DataType(DataType.Date)]
-        public ICollection<DateTime>? SpecificDates { get; set; }
 
         // Navigation properties and/or IDs:
         public ICollection<Product>? Products { get; set; }
