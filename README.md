@@ -1,1 +1,1 @@
-ShoppingList
+ShoppingList is a project mainly for learning purposes.
