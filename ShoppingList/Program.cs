@@ -8,7 +8,13 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("ShoppingListContextConnection");
 builder.Services.AddDbContext<ShoppingListContext>(options =>
     options.UseSqlServer(connectionString));
-builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddDefaultIdentity<User>(options => {
+    options.SignIn.RequireConfirmedAccount = false;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireLowercase = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequireDigit = false;
+})
     .AddEntityFrameworkStores<ShoppingListContext>();
 
 // Add services to the container.
