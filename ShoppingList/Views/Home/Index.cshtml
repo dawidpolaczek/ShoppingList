@@ -3,6 +3,15 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>You have to <a asp-area="Identity" asp-page="/Account/Login">log in</a> before using this service.</p>
+    @{
+        if (User.Identity!.IsAuthenticated)
+        {
+
+        }
+        else
+        {
+            <h1 class="display-4">Welcome</h1>
+            <p>You have to <a asp-area="Identity" asp-page="/Account/Login">log in</a> before using this service.</p>
+        }
+    }
 </div>

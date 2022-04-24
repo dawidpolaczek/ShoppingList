@@ -8,6 +8,6 @@
         public string? Image { get; set; }
 
         // Navigation properties and/or IDs:
-        public ICollection<Basket>? Baskets { get; set; }
+        public virtual ICollection<Basket>? Baskets { get; set; }
     }
 }

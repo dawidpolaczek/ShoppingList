@@ -9,8 +9,8 @@ namespace ShoppingList.Models
         public DayOfWeek? DayOfWeek { get; set; }
 
         // Navigation properties and/or IDs:
-        public ICollection<Product>? Products { get; set; }
+        public virtual ICollection<Product>? Products { get; set; }
         public int? ShopId { get; set; }
-        public Shop? Shop { get; set; }
+        public virtual Shop? Shop { get; set; }
     }
 }
