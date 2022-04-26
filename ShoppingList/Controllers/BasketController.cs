@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ShoppingList.Services;
+using ShoppingList.Services.Interfaces;
 
 namespace ShoppingList.Controllers
 {
@@ -13,9 +14,9 @@ namespace ShoppingList.Controllers
             _basketService = basketService;
         }
 
-        public string Index()
+        public IActionResult Index()
         {
-            return "Index";
+            return View();
         }
     }
 }
