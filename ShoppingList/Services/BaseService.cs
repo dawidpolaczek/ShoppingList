@@ -1,14 +1,15 @@
-﻿using ShoppingList.Data;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using ShoppingList.DAL;
 
 namespace ShoppingList.Services
 {
     public abstract class BaseService
     {
-        protected ShoppingListContext DbContext { get; }
+        protected readonly ShoppingListContext _dbContext;
 
         public BaseService(ShoppingListContext dbContext)
         {
-            DbContext = dbContext;
+            _dbContext = dbContext;
         }
     }
 }
