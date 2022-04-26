@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ShoppingList.Data;
 using ShoppingList.Models;
+using ShoppingList.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,7 +20,7 @@ builder.Services.AddDefaultIdentity<User>(options => {
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-/*builder.Services.AddRazorPages();*/
+builder.Services.AddScoped<IBasketService, BasketService>();
 
 var app = builder.Build();
 
