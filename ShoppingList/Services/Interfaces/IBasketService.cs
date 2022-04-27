@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
-using ShoppingList.Models;
+﻿using ShoppingList.Models;
 using System.Linq.Expressions;
 
 namespace ShoppingList.Services.Interfaces

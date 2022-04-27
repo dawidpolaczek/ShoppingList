@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using ShoppingList.DAL;
 using ShoppingList.Models;
 using ShoppingList.Services;
+using ShoppingList.Services.ConcreteServices;
+using ShoppingList.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +23,7 @@ builder.Services.AddDefaultIdentity<User>(options => {
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IBasketService, BasketService>();
+builder.Services.AddScoped<IProductService, ProductService>();
 
 var app = builder.Build();
 
