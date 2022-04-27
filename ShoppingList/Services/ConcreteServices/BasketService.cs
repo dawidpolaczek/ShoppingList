@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.EntityFrameworkCore;
 using ShoppingList.DAL;
 using ShoppingList.Models;
 using ShoppingList.Services.Interfaces;
@@ -10,10 +11,25 @@ namespace ShoppingList.Services.ConcreteServices
     {
         public BasketService(ShoppingListContext dbContext) : base(dbContext) { }
 
-        public async Task<int> AddOrUpdateBasket(Basket basket)
+        public async Task AddBasket(Basket basket)
         {
-            _dbContext.Update(basket);
-            return await _dbContext.SaveChangesAsync();
+            _dbContext.Add(basket);
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task<bool> UpdateBasket(Basket basket)
+        {
+            try
+            {
+                _dbContext.Update(basket);
+                await _dbContext.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return false;
+            }
+
+            return true;
         }
 
         public Basket? GetBasket(Expression<Func<Basket, bool>> filterExpression)
@@ -28,16 +44,16 @@ namespace ShoppingList.Services.ConcreteServices
             return _dbContext.Baskets.ToList();
         }
 
-        public async Task<int> RemoveBasket(Basket basket)
+        public async Task RemoveBasket(Basket basket)
         {
             _dbContext.Remove(basket);
-            return await _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<int> RemoveBaskets(ICollection<Basket> baskets)
+        public async Task RemoveBaskets(ICollection<Basket> baskets)
         {
             _dbContext.RemoveRange(baskets);
-            return await _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
         }
     }
 }
