@@ -6,14 +6,9 @@ using System.Linq.Expressions;
 
 namespace ShoppingList.Services.ConcreteServices
 {
-    public class DataService<TEntity> : IDataService<TEntity> where TEntity : class
+    public class DataService<TEntity> : BaseDataService, IDataService<TEntity> where TEntity : class
     {
-        private readonly ShoppingListContext _dbContext;
-
-        public DataService(ShoppingListContext dbContext)
-        {
-            _dbContext = dbContext;
-        }
+        public DataService(ShoppingListContext dbContext) : base(dbContext) { }
 
         public async Task Add(TEntity entity)
         {
