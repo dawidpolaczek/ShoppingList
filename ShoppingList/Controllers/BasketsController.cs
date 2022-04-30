@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ShoppingList.Models;
 using ShoppingList.Services;
 using ShoppingList.Services.Interfaces;
@@ -6,21 +7,22 @@ using System.Security.Claims;
 
 namespace ShoppingList.Controllers
 {
-    public class BasketController : Controller
+    public class BasketsController : Controller
     {
 
         private readonly IDataService<Basket> _basketService;
         private readonly ICurrentUserService _currentUser;
 
-        public BasketController(IDataService<Basket> basketService, ICurrentUserService currentUserService)
+        public BasketsController(IDataService<Basket> basketService, ICurrentUserService currentUserService)
         {
             _basketService = basketService;
             _currentUser = currentUserService;
         }
 
-        public string Index()
+        [Authorize]
+        public IActionResult Index()
         {
-            return _currentUser.GetId() ?? "null";
+            return View();
         }
     }
 }
