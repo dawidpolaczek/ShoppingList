@@ -9,7 +9,7 @@ using ShoppingList.Services.Interfaces;
 var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("ShoppingListContextConnection");
-builder.Services.AddDbContext<ShoppingListContext>(options =>
+builder.Services.AddDbContext<ShoppingListDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDefaultIdentity<User>(options => {
     options.SignIn.RequireConfirmedAccount = false;
@@ -18,7 +18,7 @@ builder.Services.AddDefaultIdentity<User>(options => {
     options.Password.RequireUppercase = false;
     options.Password.RequireDigit = false;
 })
-    .AddEntityFrameworkStores<ShoppingListContext>();
+    .AddEntityFrameworkStores<ShoppingListDbContext>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

@@ -7,7 +7,7 @@ namespace ShoppingList.Services.ConcreteServices
 {
     public class UserDataService<TEntity> : BaseDataService, IDataService<TEntity> where TEntity : class
     {
-        public UserDataService(ShoppingListContext dbContext)
+        public UserDataService(ShoppingListDbContext dbContext)
             : base(dbContext) { }
 
         public async Task Add(TEntity entity)

@@ -4,9 +4,9 @@ namespace ShoppingList.Services
 {
     public abstract class BaseDataService
     {
-        protected readonly ShoppingListContext _dbContext;
+        protected readonly ShoppingListDbContext _dbContext;
 
-        protected BaseDataService(ShoppingListContext dbContext)
+        protected BaseDataService(ShoppingListDbContext dbContext)
         {
             _dbContext = dbContext;
         }

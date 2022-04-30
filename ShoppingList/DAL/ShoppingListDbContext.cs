@@ -5,9 +5,9 @@ using ShoppingList.Models;
 
 namespace ShoppingList.DAL;
 
-public class ShoppingListContext : IdentityDbContext<User>
+public class ShoppingListDbContext : IdentityDbContext<User>
 {
-    public ShoppingListContext(DbContextOptions<ShoppingListContext> options)
+    public ShoppingListDbContext(DbContextOptions<ShoppingListDbContext> options)
         : base(options)
     {
     }

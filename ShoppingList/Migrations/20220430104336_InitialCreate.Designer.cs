@@ -11,7 +11,7 @@ using ShoppingList.DAL;
 
 namespace ShoppingList.Migrations
 {
-    [DbContext(typeof(ShoppingListContext))]
+    [DbContext(typeof(ShoppingListDbContext))]
     [Migration("20220430104336_InitialCreate")]
     partial class InitialCreate
     {

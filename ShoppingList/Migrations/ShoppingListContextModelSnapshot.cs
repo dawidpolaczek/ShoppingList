@@ -10,7 +10,7 @@ using ShoppingList.DAL;
 
 namespace ShoppingList.Migrations
 {
-    [DbContext(typeof(ShoppingListContext))]
+    [DbContext(typeof(ShoppingListDbContext))]
     partial class ShoppingListContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
