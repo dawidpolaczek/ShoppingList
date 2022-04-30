@@ -5,16 +5,16 @@ namespace ShoppingList.Services.ConcreteServices
 {
     public class CurrentUserService : ICurrentUserService
     {
-        private readonly IHttpContextAccessor _contextAccessor;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public CurrentUserService(IHttpContextAccessor contextAccessor)
+        public CurrentUserService(IHttpContextAccessor httpContextAccessor)
         {
-            _contextAccessor = contextAccessor;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public string? GetId()
         {
-            return _contextAccessor.HttpContext!.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            return _httpContextAccessor.HttpContext!.User.FindFirstValue(ClaimTypes.NameIdentifier);
         }
     }
 }
