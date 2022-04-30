@@ -36,7 +36,7 @@ namespace ShoppingList.Services.ConcreteServices
             return _dbContext.Set<TEntity>().AsNoTracking().FirstOrDefault(filterExpression);
         }
 
-        public ICollection<TEntity> GetWhere(Expression<Func<TEntity, bool>>? filterExpression = null)
+        public ICollection<TEntity> GetAll(Expression<Func<TEntity, bool>>? filterExpression = null)
         {
             if (filterExpression != null)
                 return _dbContext.Set<TEntity>().Where(filterExpression).AsNoTracking().ToList();

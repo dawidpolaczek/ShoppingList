@@ -37,6 +37,21 @@ namespace ShoppingList.Migrations
                     b.ToTable("BasketProduct");
                 });
 
+            modelBuilder.Entity("BasketShop", b =>
+                {
+                    b.Property<int>("BasketsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ShopsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("BasketsId", "ShopsId");
+
+                    b.HasIndex("ShopsId");
+
+                    b.ToTable("BasketShop");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -189,15 +204,10 @@ namespace ShoppingList.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ShopId")
-                        .HasColumnType("int");
-
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ShopId");
 
                     b.HasIndex("UserId");
 
@@ -222,12 +232,7 @@ namespace ShoppingList.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Products");
                 });
@@ -250,12 +255,7 @@ namespace ShoppingList.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Shops");
                 });
@@ -340,6 +340,21 @@ namespace ShoppingList.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("BasketShop", b =>
+                {
+                    b.HasOne("ShoppingList.Models.Basket", null)
+                        .WithMany()
+                        .HasForeignKey("BasketsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ShoppingList.Models.Shop", null)
+                        .WithMany()
+                        .HasForeignKey("ShopsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -393,43 +408,17 @@ namespace ShoppingList.Migrations
 
             modelBuilder.Entity("ShoppingList.Models.Basket", b =>
                 {
-                    b.HasOne("ShoppingList.Models.Shop", "Shop")
+                    b.HasOne("ShoppingList.Models.User", "User")
                         .WithMany("Baskets")
-                        .HasForeignKey("ShopId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("ShoppingList.Models.User", null)
-                        .WithMany("Baskets")
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("Shop");
-                });
-
-            modelBuilder.Entity("ShoppingList.Models.Product", b =>
-                {
-                    b.HasOne("ShoppingList.Models.User", null)
-                        .WithMany("Products")
-                        .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("ShoppingList.Models.Shop", b =>
-                {
-                    b.HasOne("ShoppingList.Models.User", null)
-                        .WithMany("Shops")
-                        .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("ShoppingList.Models.Shop", b =>
-                {
-                    b.Navigation("Baskets");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ShoppingList.Models.User", b =>
                 {
                     b.Navigation("Baskets");
-
-                    b.Navigation("Products");
-
-                    b.Navigation("Shops");
                 });
 #pragma warning restore 612, 618
         }

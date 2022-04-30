@@ -10,7 +10,8 @@ namespace ShoppingList.Models
 
         // Navigation properties and/or IDs:
         public virtual ICollection<Product>? Products { get; set; }
-        public int? ShopId { get; set; }
-        public virtual Shop? Shop { get; set; }
+        public virtual ICollection<Shop>? Shops { get; set; }
+        public string? UserId { get; set; }
+        public User? User { get; set; }
     }
 }
