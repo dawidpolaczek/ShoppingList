@@ -2,6 +2,7 @@
 using ShoppingList.Models;
 using ShoppingList.Services;
 using ShoppingList.Services.Interfaces;
+using System.Security.Claims;
 
 namespace ShoppingList.Controllers
 {
@@ -9,15 +10,17 @@ namespace ShoppingList.Controllers
     {
 
         private readonly IDataService<Basket> _basketService;
+        private readonly ICurrentUserService _currentUser;
 
-        public BasketController(IDataService<Basket> basketService)
+        public BasketController(IDataService<Basket> basketService, ICurrentUserService currentUserService)
         {
             _basketService = basketService;
+            _currentUser = currentUserService;
         }
 
-        public IActionResult Index()
+        public string Index()
         {
-            return View();
+            return _currentUser.GetId() ?? "null";
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ShoppingList.Models;
+using ShoppingList.Services.Interfaces;
 using System.Diagnostics;
 
 namespace ShoppingList.Controllers

@@ -1,14 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShoppingList.DAL;
-using ShoppingList.Models;
 using ShoppingList.Services.Interfaces;
 using System.Linq.Expressions;
 
 namespace ShoppingList.Services.ConcreteServices
 {
-    public class DataService<TEntity> : BaseDataService, IDataService<TEntity> where TEntity : class
+    public class UserDataService<TEntity> : BaseDataService, IDataService<TEntity> where TEntity : class
     {
-        public DataService(ShoppingListContext dbContext) : base(dbContext) { }
+        public UserDataService(ShoppingListContext dbContext)
+            : base(dbContext) { }
 
         public async Task Add(TEntity entity)
         {
