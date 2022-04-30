@@ -12,7 +12,7 @@ using ShoppingList.DAL;
 namespace ShoppingList.Migrations
 {
     [DbContext(typeof(ShoppingListContext))]
-    [Migration("20220430101821_InitialCreate")]
+    [Migration("20220430104336_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -234,7 +234,12 @@ namespace ShoppingList.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Products");
                 });
@@ -257,7 +262,12 @@ namespace ShoppingList.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Shops");
                 });
@@ -412,8 +422,25 @@ namespace ShoppingList.Migrations
                 {
                     b.HasOne("ShoppingList.Models.User", "User")
                         .WithMany("Baskets")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("ShoppingList.Models.Product", b =>
+                {
+                    b.HasOne("ShoppingList.Models.User", "User")
+                        .WithMany("Products")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("ShoppingList.Models.Shop", b =>
+                {
+                    b.HasOne("ShoppingList.Models.User", "User")
+                        .WithMany("Shops")
+                        .HasForeignKey("UserId");
 
                     b.Navigation("User");
                 });
@@ -421,6 +448,10 @@ namespace ShoppingList.Migrations
             modelBuilder.Entity("ShoppingList.Models.User", b =>
                 {
                     b.Navigation("Baskets");
+
+                    b.Navigation("Products");
+
+                    b.Navigation("Shops");
                 });
 #pragma warning restore 612, 618
         }

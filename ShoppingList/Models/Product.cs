@@ -9,5 +9,7 @@
 
         // Navigation properties and/or IDs:
         public virtual ICollection<Basket>? Baskets { get; set; }
+        public string? UserId { get; set; }
+        public User? User { get; set; }
     }
 }

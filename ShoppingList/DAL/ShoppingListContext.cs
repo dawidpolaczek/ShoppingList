@@ -15,7 +15,6 @@ public class ShoppingListContext : IdentityDbContext<User>
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
-        builder.Entity<User>().HasMany(u => u.Baskets).WithOne(b => b.User).OnDelete(DeleteBehavior.Cascade);
     }
 
     public DbSet<Basket> Baskets { get; set; }
