@@ -6,10 +6,12 @@ namespace ShoppingList.Services.Interfaces
     public interface IDataService<TEntity> where TEntity : class
     {
         Task Add(TEntity entity);
-        Task<bool> Update(TEntity entity);
-        TEntity? Get(Expression<Func<TEntity, bool>> filterExpression);
-        ICollection<TEntity> GetAll(Expression<Func<TEntity, bool>>? filterExpression = null);
+        Task Update(TEntity entity);
+        Task<TEntity?> Get(Expression<Func<TEntity, bool>> filterExpression);
+        ICollection<TEntity> GetMany(Expression<Func<TEntity, bool>>? filterExpression = null);
         Task Remove(TEntity entity);
-        Task RemoveRange(ICollection<TEntity> entites);
+        Task RemoveMany(ICollection<TEntity> entites);
+        Task<TEntity?> FindAsync(params object?[]? keyValues);
+        Task<bool> Exists(params object?[]? keyValues);
     }
 }

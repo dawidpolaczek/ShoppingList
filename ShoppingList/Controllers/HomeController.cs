@@ -5,11 +5,11 @@ using System.Diagnostics;
 
 namespace ShoppingList.Controllers
 {
-    public class HomesController : Controller
+    public class HomeController : Controller
     {
-        private readonly ILogger<HomesController> _logger;
+        private readonly ILogger<HomeController> _logger;
 
-        public HomesController(ILogger<HomesController> logger)
+        public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
         }
