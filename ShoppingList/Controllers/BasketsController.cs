@@ -23,8 +23,9 @@ namespace ShoppingList.Controllers
         [Authorize]
         public async Task<IActionResult> Index(string? shopName, string? searchString)
         {
-            var baskets = await _basketService.GetMany(b => b.UserId == _currentUser.GetId());
-            IEnumerable<string>? userShops = (from b in baskets select b.Shops)
+            var baskets = await _basketService.GetMany(b => b.UserId == _currentUser.GetId(),
+                bs => bs.OrderBy(b => b.DayOfWeek));
+            var userShops = (from b in baskets select b.Shops)
                 .SelectMany(shops => from s in shops select s.Name);
 
             if (!string.IsNullOrEmpty(searchString))
