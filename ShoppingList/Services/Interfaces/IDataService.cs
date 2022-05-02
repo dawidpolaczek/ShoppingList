@@ -8,7 +8,7 @@ namespace ShoppingList.Services.Interfaces
         Task Add(TEntity entity);
         Task Update(TEntity entity);
         Task<TEntity?> Get(Expression<Func<TEntity, bool>> filterExpression);
-        ICollection<TEntity> GetMany(Expression<Func<TEntity, bool>>? filterExpression = null);
+        Task<IEnumerable<TEntity>> GetMany(Expression<Func<TEntity, bool>>? filterExpression = null);
         Task Remove(TEntity entity);
         Task RemoveMany(ICollection<TEntity> entites);
         Task<TEntity?> FindAsync(params object?[]? keyValues);

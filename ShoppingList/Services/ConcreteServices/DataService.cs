@@ -34,12 +34,12 @@ namespace ShoppingList.Services.ConcreteServices
             return await _dbContext.Set<TEntity>().FirstOrDefaultAsync(filterExpression);
         }
 
-        public ICollection<TEntity> GetMany(Expression<Func<TEntity, bool>>? filterExpression = null)
+        public async Task<IEnumerable<TEntity>> GetMany(Expression<Func<TEntity, bool>>? filterExpression = null)
         {
             var queryable = _dbContext.Set<TEntity>().AsNoTracking();
             if (filterExpression != null)
-                return queryable.Where(filterExpression).ToList();
-            return queryable.ToList();
+                return await queryable.Where(filterExpression).ToListAsync();
+            return await queryable.ToListAsync();
         }
 
         public async Task Remove(TEntity entity)
