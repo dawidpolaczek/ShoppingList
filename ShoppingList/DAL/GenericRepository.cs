@@ -29,11 +29,16 @@ namespace ShoppingList.DAL
             return await _dbContext.Set<TEntity>().FirstOrDefaultAsync(filterExpression);
         }
 
-        public virtual async Task<IEnumerable<TEntity>> GetMany(Expression<Func<TEntity, bool>>? filterExpression = null)
+        public virtual async Task<IEnumerable<TEntity>> GetMany(Expression<Func<TEntity, bool>>? filterExpression = null,
+            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null)
         {
             var queryable = _dbContext.Set<TEntity>().AsNoTracking();
+
             if (filterExpression != null)
-                return await queryable.Where(filterExpression).ToListAsync();
+                queryable = queryable.Where(filterExpression);
+            if (orderBy != null)
+                queryable = orderBy(queryable);
+
             return await queryable.ToListAsync();
         }
 
