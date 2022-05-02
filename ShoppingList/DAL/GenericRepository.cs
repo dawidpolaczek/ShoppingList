@@ -4,14 +4,14 @@ using ShoppingList.Models;
 using ShoppingList.Services.Interfaces;
 using System.Linq.Expressions;
 
-namespace ShoppingList.Services.ConcreteServices
+namespace ShoppingList.DAL
 {
-    public class DataService<TEntity> : BaseDataService, IDataService<TEntity> where TEntity : EntityBase
+    public class GenericRepository<TEntity> : BaseRepository, IRepository<TEntity> where TEntity : EntityBase
     {
-        public DataService(ShoppingListDbContext dbContext)
+        public GenericRepository(ShoppingListDbContext dbContext)
             : base(dbContext) { }
 
-        public async Task Save(TEntity entity)
+        public virtual async Task Save(TEntity entity)
         {
             if (entity.Id > 0)
             {
@@ -24,12 +24,12 @@ namespace ShoppingList.Services.ConcreteServices
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<TEntity?> Get(Expression<Func<TEntity, bool>> filterExpression)
+        public virtual async Task<TEntity?> Get(Expression<Func<TEntity, bool>> filterExpression)
         {
             return await _dbContext.Set<TEntity>().FirstOrDefaultAsync(filterExpression);
         }
 
-        public async Task<IEnumerable<TEntity>> GetMany(Expression<Func<TEntity, bool>>? filterExpression = null)
+        public virtual async Task<IEnumerable<TEntity>> GetMany(Expression<Func<TEntity, bool>>? filterExpression = null)
         {
             var queryable = _dbContext.Set<TEntity>().AsNoTracking();
             if (filterExpression != null)
@@ -37,19 +37,19 @@ namespace ShoppingList.Services.ConcreteServices
             return await queryable.ToListAsync();
         }
 
-        public async Task Remove(TEntity entity)
+        public virtual async Task Remove(TEntity entity)
         {
             _dbContext.Remove(entity);
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task RemoveMany(ICollection<TEntity> entities)
+        public virtual async Task RemoveMany(ICollection<TEntity> entities)
         {
             _dbContext.RemoveRange(entities);
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<bool> Exists(int id)
+        public virtual async Task<bool> Exists(int id)
         {
             return await Get(e => e.Id == id) != null;
         }

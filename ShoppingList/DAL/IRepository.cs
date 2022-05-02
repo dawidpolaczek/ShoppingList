@@ -1,9 +1,9 @@
 ﻿using ShoppingList.Models;
 using System.Linq.Expressions;
 
-namespace ShoppingList.Services.Interfaces
+namespace ShoppingList.DAL
 {
-    public interface IDataService<TEntity> where TEntity : EntityBase
+    public interface IRepository<TEntity> where TEntity : EntityBase
     {
         Task Save(TEntity entity);
         Task<TEntity?> Get(Expression<Func<TEntity, bool>> filterExpression);

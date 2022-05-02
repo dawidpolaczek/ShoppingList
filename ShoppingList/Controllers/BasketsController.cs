@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using ShoppingList.DAL;
 using ShoppingList.Models;
 using ShoppingList.Services.Interfaces;
 
@@ -10,10 +11,10 @@ namespace ShoppingList.Controllers
     public class BasketsController : Controller
     {
 
-        private readonly IDataService<Basket> _basketService;
+        private readonly IRepository<Basket> _basketService;
         private readonly ICurrentUserService _currentUser;
 
-        public BasketsController(IDataService<Basket> basketService, ICurrentUserService currentUserService)
+        public BasketsController(IRepository<Basket> basketService, ICurrentUserService currentUserService)
         {
             _basketService = basketService;
             _currentUser = currentUserService;
@@ -61,7 +62,7 @@ namespace ShoppingList.Controllers
             return View(basket);
         }
 
-        public async Task<IActionResult> Update(int? id)
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
@@ -80,7 +81,7 @@ namespace ShoppingList.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Update(int id,
+        public async Task<IActionResult> Edit(int id,
             [Bind("Id,Name,DayOfWeek")] Basket basket)
         {
             if (id != basket.Id)

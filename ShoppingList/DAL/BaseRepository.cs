@@ -1,12 +1,12 @@
 ﻿using ShoppingList.DAL;
 
-namespace ShoppingList.Services
+namespace ShoppingList.DAL
 {
-    public abstract class BaseDataService
+    public abstract class BaseRepository
     {
         protected readonly ShoppingListDbContext _dbContext;
 
-        protected BaseDataService(ShoppingListDbContext dbContext)
+        protected BaseRepository(ShoppingListDbContext dbContext)
         {
             _dbContext = dbContext;
         }

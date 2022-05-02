@@ -1,8 +1,6 @@
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ShoppingList.DAL;
 using ShoppingList.Models;
-using ShoppingList.Services;
 using ShoppingList.Services.ConcreteServices;
 using ShoppingList.Services.Interfaces;
 
@@ -22,9 +20,9 @@ builder.Services.AddDefaultIdentity<User>(options => {
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddScoped<IDataService<Basket>, DataService<Basket>>();
-builder.Services.AddScoped<IDataService<Product>, DataService<Product>>();
-builder.Services.AddScoped<IDataService<Shop>, DataService<Shop>>();
+builder.Services.AddScoped<IRepository<Basket>, GenericRepository<Basket>>();
+builder.Services.AddScoped<IRepository<Product>, GenericRepository<Product>>();
+builder.Services.AddScoped<IRepository<Shop>, GenericRepository<Shop>>();
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 
 var app = builder.Build();

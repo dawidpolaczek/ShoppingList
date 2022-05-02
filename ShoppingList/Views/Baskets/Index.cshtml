@@ -40,12 +40,16 @@
                     <td>@Html.DisplayFor(item => basket.DayOfWeek)</td>
                     <td>
                         <a asp-action="Details" asp-route-id=@basket.Id>Details</a>
-                        <a asp-action="Update" asp-route-id=@basket.Id>Edit</a>
+                        <a asp-action="Edit" asp-route-id=@basket.Id>Edit</a>
                         <a asp-action="Remove" asp-route-id=@basket.Id>Remove</a>
                     </td>
                 </tr>
             }
         </tbody>
     </table>
+}
+else
+{
+    <p>No baskets found.</p>
 }
 
