@@ -54,7 +54,7 @@ namespace ShoppingList.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _basketService.Add(basket);
+                await _basketService.Save(basket);
                 return RedirectToAction(nameof(Index));
             }
 
@@ -68,7 +68,7 @@ namespace ShoppingList.Controllers
                 return NotFound();
             }
 
-            var basket = await _basketService.FindAsync(id);
+            var basket = await _basketService.Get(b => b.Id == id);
             if (basket == null)
             {
                 return NotFound();
@@ -92,7 +92,7 @@ namespace ShoppingList.Controllers
             {
                 try
                 {
-                    await _basketService.Update(basket);
+                    await _basketService.Save(basket);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -140,7 +140,7 @@ namespace ShoppingList.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var basket = await _basketService.FindAsync(id);
+            var basket = await _basketService.Get(b => b.Id == id);
 
             if (basket == null)
                 return NotFound();

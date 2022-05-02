@@ -1,32 +1,27 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShoppingList.DAL;
+using ShoppingList.Models;
 using ShoppingList.Services.Interfaces;
 using System.Linq.Expressions;
 
 namespace ShoppingList.Services.ConcreteServices
 {
-    public class DataService<TEntity> : BaseDataService, IDataService<TEntity> where TEntity : class
+    public class DataService<TEntity> : BaseDataService, IDataService<TEntity> where TEntity : EntityBase
     {
         public DataService(ShoppingListDbContext dbContext)
             : base(dbContext) { }
 
-        public async Task Add(TEntity entity)
+        public async Task Save(TEntity entity)
         {
-            _dbContext.Add(entity);
-            await _dbContext.SaveChangesAsync();
-        }
-
-        public async Task Update(TEntity entity)
-        {
-            try
+            if (entity.Id > 0)
             {
                 _dbContext.Update(entity);
-                await _dbContext.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException)
+            else
             {
-                throw;
+                _dbContext.Add(entity);
             }
+            await _dbContext.SaveChangesAsync();
         }
 
         public async Task<TEntity?> Get(Expression<Func<TEntity, bool>> filterExpression)
@@ -54,14 +49,9 @@ namespace ShoppingList.Services.ConcreteServices
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<TEntity?> FindAsync(params object?[]? keyValues)
+        public async Task<bool> Exists(int id)
         {
-            return await _dbContext.Set<TEntity>().FindAsync(keyValues);
-        }
-
-        public async Task<bool> Exists(params object?[]? keyValues)
-        {
-            return await FindAsync(keyValues) != null;
+            return await Get(e => e.Id == id) != null;
         }
     }
 }

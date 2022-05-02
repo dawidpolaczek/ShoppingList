@@ -2,9 +2,8 @@
 
 namespace ShoppingList.Models
 {
-    public class Basket
+    public class Basket : EntityBase
     {
-        public int Id { get; set; }
         public string Name { get; set; } = null!;
         public DayOfWeek? DayOfWeek { get; set; }
 
