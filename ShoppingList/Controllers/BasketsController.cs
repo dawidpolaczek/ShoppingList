@@ -20,14 +20,14 @@ namespace ShoppingList.Controllers
         }
 
         [Authorize]
-        public async Task<IActionResult> Index(string? shopName, string? name)
+        public async Task<IActionResult> Index(string? shopName, string? searchString)
         {
             var baskets = await _basketService.GetMany(b => b.UserId == _currentUser.GetId());
             IEnumerable<string>? userShops = (from b in baskets select b.Shops)
                 .SelectMany(shops => from s in shops select s.Name);
 
-            if (!string.IsNullOrEmpty(name))
-                baskets = baskets.Where(b => b.Name!.Contains(name, StringComparison.OrdinalIgnoreCase));
+            if (!string.IsNullOrEmpty(searchString))
+                baskets = baskets.Where(b => b.Name!.Contains(searchString, StringComparison.OrdinalIgnoreCase));
             if (!string.IsNullOrEmpty(shopName))
                 baskets = baskets.Where(b => b.Shops!.Any(
                     s => s.Name.Equals(shopName, StringComparison.OrdinalIgnoreCase)));

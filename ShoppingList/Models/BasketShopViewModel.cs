@@ -6,7 +6,7 @@ namespace ShoppingList.Models
     {
         public IList<Basket>? Baskets { get; set; }
         public SelectList? Shops { get; set; }
-        public string? BasketShopName { get; set; }
-        public string? Name { get; set; }
+        public string? ShopName { get; set; }
+        public string? SearchString { get; set; }
     }
 }

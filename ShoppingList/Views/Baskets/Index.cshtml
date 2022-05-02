@@ -13,11 +13,11 @@
 
 <form asp-controller="Baskets" asp-action="Index" method="get">
     <p>
-        <select asp-for="BasketShopName" asp-items="Model.Shops">
+        <select asp-for="ShopName" asp-items="Model.Shops">
             <option value="">All</option>
         </select>
 
-        Name: <input type="text" asp-for="Name" />
+        Name: <input type="text" asp-for="SearchString" />
         <input type="submit" value="Search"/>
     </p>
 </form>
