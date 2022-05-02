@@ -8,10 +8,10 @@ namespace ShoppingList.Controllers
 {
     public class ProductsController : Controller
     {
-        private readonly IRepository<Product> _productService;
+        private readonly IDataService<Product> _productService;
         private readonly ICurrentUserService _currentUser;
 
-        public ProductsController(IRepository<Product> productService, ICurrentUserService currentUserService)
+        public ProductsController(IDataService<Product> productService, ICurrentUserService currentUserService)
         {
             _productService = productService;
             _currentUser = currentUserService;

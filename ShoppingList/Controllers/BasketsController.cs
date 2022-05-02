@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using ShoppingList.DAL;
 using ShoppingList.Models;
 using ShoppingList.Services.Interfaces;
 
@@ -11,10 +10,10 @@ namespace ShoppingList.Controllers
     public class BasketsController : Controller
     {
 
-        private readonly IRepository<Basket> _basketService;
+        private readonly IDataService<Basket> _basketService;
         private readonly ICurrentUserService _currentUser;
 
-        public BasketsController(IRepository<Basket> basketService, ICurrentUserService currentUserService)
+        public BasketsController(IDataService<Basket> basketService, ICurrentUserService currentUserService)
         {
             _basketService = basketService;
             _currentUser = currentUserService;

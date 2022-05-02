@@ -4,11 +4,11 @@ using ShoppingList.Models;
 using ShoppingList.Services.Interfaces;
 using System.Linq.Expressions;
 
-namespace ShoppingList.DAL
+namespace ShoppingList.Services.ConcreteServices
 {
-    public class GenericRepository<TEntity> : BaseRepository, IRepository<TEntity> where TEntity : EntityBase
+    public class GenericDataService<TEntity> : BaseDataService, IDataService<TEntity> where TEntity : EntityBase
     {
-        public GenericRepository(ShoppingListDbContext dbContext)
+        public GenericDataService(ShoppingListDbContext dbContext)
             : base(dbContext) { }
 
         public virtual async Task Save(TEntity entity)

@@ -20,9 +20,9 @@ builder.Services.AddDefaultIdentity<User>(options => {
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddScoped<IRepository<Basket>, GenericRepository<Basket>>();
-builder.Services.AddScoped<IRepository<Product>, GenericRepository<Product>>();
-builder.Services.AddScoped<IRepository<Shop>, GenericRepository<Shop>>();
+builder.Services.AddScoped<IDataService<Basket>, GenericDataService<Basket>>();
+builder.Services.AddScoped<IDataService<Product>, GenericDataService<Product>>();
+builder.Services.AddScoped<IDataService<Shop>, GenericDataService<Shop>>();
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 
 var app = builder.Build();

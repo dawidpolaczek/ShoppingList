@@ -8,10 +8,10 @@ namespace ShoppingList.Controllers
 {
     public class ShopsController : Controller
     {
-        private readonly IRepository<Shop> _shopService;
+        private readonly IDataService<Shop> _shopService;
         private readonly ICurrentUserService _currentUser;
 
-        public ShopsController(IRepository<Shop> shopService, ICurrentUserService currentUserService)
+        public ShopsController(IDataService<Shop> shopService, ICurrentUserService currentUserService)
         {
             _shopService = shopService;
             _currentUser = currentUserService;
