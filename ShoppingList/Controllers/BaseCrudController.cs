@@ -7,12 +7,12 @@ using ShoppingList.Services.Interfaces;
 
 namespace ShoppingList.Controllers
 {
-    public abstract class BaseController<TEntity> : Controller where TEntity : EntityBase
+    public abstract class BaseCrudController<TEntity> : Controller where TEntity : EntityBase
     {
         protected readonly IDataService<TEntity> _dataService;
         protected readonly ICurrentUserService _currentUser;
 
-        public BaseController(IDataService<TEntity> dataService, ICurrentUserService currentUser)
+        public BaseCrudController(IDataService<TEntity> dataService, ICurrentUserService currentUser)
         {
             _dataService = dataService;
             _currentUser = currentUser;
@@ -21,6 +21,8 @@ namespace ShoppingList.Controllers
         [Authorize]
         public virtual IActionResult Create()
         {
+            //temp
+            ViewBag.UserId = _currentUser.GetId();
             return View();
         }
 
