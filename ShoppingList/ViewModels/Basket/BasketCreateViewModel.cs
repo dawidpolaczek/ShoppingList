@@ -1,4 +1,5 @@
-﻿using ShoppingList.Models;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using ShoppingList.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace ShoppingList.ViewModels.Basket
@@ -8,10 +9,9 @@ namespace ShoppingList.ViewModels.Basket
         [Required]
         public string UserId { get; set; } = null!;
 
-        public IList<Product>? AvailableProducts { get; set; }
-        public IList<Product>? SelectedProducts { get; set; }
+        [Display(Name = "Day of the week")]
+        public SelectList? DaysOfWeek { get; set; }
 
-        public IList<Shop>? AvailableShops { get; set; }
-        public IList<Shop>? SelectedShops { get; set; }
+        public SelectList? Shops { get; set; }
     }
 }

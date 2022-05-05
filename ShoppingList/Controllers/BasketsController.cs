@@ -50,7 +50,11 @@ namespace ShoppingList.Controllers
         [Authorize]
         public virtual IActionResult Create()
         {
-            var basket = new BasketCreateViewModel() { UserId = _currentUser.GetId() };
+            var basket = new BasketCreateViewModel()
+            { 
+                UserId = _currentUser.GetId(),
+                DaysOfWeek = GetDaysOfWeek()
+            };
             return View(basket);
         }
 
@@ -93,9 +97,9 @@ namespace ShoppingList.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public virtual async Task<IActionResult> Edit(int id, BasketEditViewModel basketVm)
+        public virtual async Task<IActionResult> Edit(int basketId, BasketEditViewModel basketVm)
         {
-            if (id != basketVm.BasketId)
+            if (basketId != basketVm.BasketId)
             {
                 return NotFound();
             }
@@ -110,7 +114,7 @@ namespace ShoppingList.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!await _basketService.Exists(id))
+                    if (!await _basketService.Exists(basketId))
                         return NotFound();
 
                     throw;
@@ -164,6 +168,23 @@ namespace ShoppingList.Controllers
             await _basketService.Save();
 
             return RedirectToAction(nameof(Index));
+        }
+
+        // temporary
+        private static SelectList GetDaysOfWeek(DayOfWeek? selectedDayOfWeek = null)
+        {
+            var days = Enum.GetValues(typeof(DayOfWeek)).Cast<DayOfWeek>();
+            var selectListItems = days
+                .Select(day => new SelectListItem()
+                {
+                    Text = day.ToString(),
+                    Value = ((int)day).ToString(),
+                    Selected = selectedDayOfWeek == day
+                });
+
+            return new SelectList(
+                selectListItems,
+                "Value", "Text");
         }
     }
 }

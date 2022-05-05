@@ -12,14 +12,19 @@
 </p>
 
 <form asp-controller="Baskets" asp-action="Index" method="get">
-    <p>
-        <select asp-for="ShopName" asp-items="Model.Shops">
-            <option value="">All</option>
-        </select>
-
-        Name: <input type="text" asp-for="SearchString" />
-        <input type="submit" value="Search"/>
-    </p>
+    <div class="row">
+        <div class="col-sm">
+            <select class="form-control" asp-for="ShopName" asp-items="Model.Shops">
+                <option value="">All shops</option>
+            </select>
+        </div>
+        <div class="col-sm">
+            <input class="form-control" type="text" asp-for="SearchString" placeholder="basket's name" />
+        </div>
+        <div class="col-sm">
+            <input type="submit" value="Search" class="btn btn-secondary" />
+        </div>
+    </div>
 </form>
 
 @if (Model.Baskets != null && Model.Baskets.Count > 0)

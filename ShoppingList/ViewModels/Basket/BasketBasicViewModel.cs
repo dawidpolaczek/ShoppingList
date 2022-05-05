@@ -9,10 +9,11 @@ namespace ShoppingList.ViewModels.Basket
         [StringLength(40, MinimumLength = 2)]
         public string? Name { get; set; }
 
-        [Display(Name = "Day of the week")]
-        public DayOfWeek? DayEveryWeek { get; set; }
         [Display(Name = "Date")]
         [DataType(DataType.Date)]
         public DateTime? SpecificDate { get; set; }
+
+        [Display(Name = "Day of the week")]
+        public DayOfWeek? DayEveryWeek { get; set; }
     }
 }
