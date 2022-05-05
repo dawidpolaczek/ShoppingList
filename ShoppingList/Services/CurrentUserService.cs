@@ -1,7 +1,7 @@
 ﻿using ShoppingList.Services.Interfaces;
 using System.Security.Claims;
 
-namespace ShoppingList.Services.ConcreteServices
+namespace ShoppingList.Services
 {
     public class CurrentUserService : ICurrentUserService
     {
@@ -12,7 +12,7 @@ namespace ShoppingList.Services.ConcreteServices
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public string? GetId()
+        public string GetId()
         {
             return _httpContextAccessor.HttpContext!.User.FindFirstValue(ClaimTypes.NameIdentifier);
         }

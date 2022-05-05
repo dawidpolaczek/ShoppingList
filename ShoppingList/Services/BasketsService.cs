@@ -1,36 +1,34 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ShoppingList.Controllers;
 using ShoppingList.DAL;
 using ShoppingList.Models;
 using ShoppingList.Services.Interfaces;
 using System.Linq.Expressions;
 
-namespace ShoppingList.Services.ConcreteServices
+namespace ShoppingList.Services
 {
-    public class DataService<TEntity> : BaseDataService<TEntity>, IDataService<TEntity> where TEntity : EntityBase
+    public class BasketsService : BaseDataService<Basket>, IDataService<Basket>
     {
-        public DataService(ShoppingListDbContext dbContext)
+        public BasketsService(ShoppingListDbContext dbContext)
             : base(dbContext) { }
 
-        public virtual async Task AddOrUpdate(TEntity entity)
+        public virtual async Task Add(Basket basket)
         {
-            if (entity.Id > 0)
-            {
-                _dbContext.Update(entity);
-            }
-            else
-            {
-                _dbContext.Add(entity);
-            }
-            await _dbContext.SaveChangesAsync();
+            await _dbContext.AddAsync(basket);
         }
 
-        public virtual async Task<TEntity?> Get(Expression<Func<TEntity, bool>> filterExpression)
+        public virtual void Update(Basket basket)
+        {
+            _dbContext.Update(basket);
+        }
+
+        public virtual async Task<Basket?> Get(Expression<Func<Basket, bool>> filterExpression)
         {
             return await _dbSet.FirstOrDefaultAsync(filterExpression);
         }
 
-        public virtual async Task<IEnumerable<TEntity>> GetMany(Expression<Func<TEntity, bool>>? filterExpression = null,
-            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null)
+        public virtual async Task<IEnumerable<Basket>> GetMany(Expression<Func<Basket, bool>>? filterExpression = null,
+            Func<IQueryable<Basket>, IOrderedQueryable<Basket>>? orderBy = null)
         {
             var queryable = _dbSet.AsNoTracking();
 
@@ -42,14 +40,14 @@ namespace ShoppingList.Services.ConcreteServices
             return await queryable.ToListAsync();
         }
 
-        public virtual void Remove(TEntity entity)
+        public virtual void Remove(Basket basket)
         {
-            _dbContext.Remove(entity);
+            _dbContext.Remove(basket);
         }
 
-        public virtual void RemoveMany(ICollection<TEntity> entities)
+        public virtual void RemoveMany(ICollection<Basket> baskets)
         {
-            _dbContext.RemoveRange(entities);
+            _dbContext.RemoveRange(baskets);
         }
 
         public virtual async Task<bool> Exists(int id)

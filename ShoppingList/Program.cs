@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using ShoppingList.DAL;
 using ShoppingList.Models;
-using ShoppingList.Services.ConcreteServices;
+using ShoppingList.Services;
 using ShoppingList.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,9 +20,8 @@ builder.Services.AddDefaultIdentity<User>(options => {
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddScoped<IDataService<Basket>, DataService<Basket>>();
-builder.Services.AddScoped<IDataService<Product>, DataService<Product>>();
-builder.Services.AddScoped<IDataService<Shop>, DataService<Shop>>();
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddScoped<IDataService<Basket>, BasketsService>();
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 
 var app = builder.Build();

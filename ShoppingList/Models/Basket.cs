@@ -4,8 +4,11 @@ namespace ShoppingList.Models
 {
     public class Basket : EntityBase
     {
+        [Required]
         public string Name { get; set; } = null!;
-        public DayOfWeek? DayOfWeek { get; set; }
+        public DayOfWeek? DayEveryWeek { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime? SpecificDate { get; set; }
 
         // Navigation properties and/or IDs:
         public virtual ICollection<Product>? Products { get; set; }

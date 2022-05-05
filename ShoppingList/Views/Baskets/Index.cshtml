@@ -1,4 +1,4 @@
-﻿@model ShoppingList.Models.BasketShopViewModel
+﻿@model ShoppingList.ViewModels.Basket.BasketSearchViewModel
 
 @{
     ViewData["Title"] = "Baskets";
@@ -28,7 +28,8 @@
         <thead>
             <tr>
                 <th>@Html.DisplayNameFor(model => model.Baskets!.First().Name)</th>
-                <th>@Html.DisplayNameFor(model => model.Baskets!.First().DayOfWeek)</th>
+                <th>@Html.DisplayNameFor(model => model.Baskets!.First().DayEveryWeek)</th>
+                <th>@Html.DisplayNameFor(model => model.Baskets!.First().Size)</th>
                 <th></th>
             </tr>
         </thead>
@@ -37,11 +38,12 @@
             {
                 <tr>
                     <td>@Html.DisplayFor(item => basket.Name)</td>
-                    <td>@Html.DisplayFor(item => basket.DayOfWeek)</td>
+                    <td>@Html.DisplayFor(item => basket.DayEveryWeek)</td>
+                    <td>@Html.DisplayFor(item => basket.Size)</td>
                     <td>
-                        <a asp-action="Details" asp-route-id=@basket.Id>Details</a>
-                        <a asp-action="Edit" asp-route-id=@basket.Id>Edit</a>
-                        <a asp-action="Remove" asp-route-id=@basket.Id>Remove</a>
+                        <a asp-action="Details" asp-route-id=@basket.BasketId>Details</a>
+                        <a asp-action="Edit" asp-route-id=@basket.BasketId>Edit</a>
+                        <a asp-action="Remove" asp-route-id=@basket.BasketId>Remove</a>
                     </td>
                 </tr>
             }
