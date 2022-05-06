@@ -7,10 +7,16 @@ using System.Linq.Expressions;
 
 namespace ShoppingList.Services
 {
-    public class BasketsService : BaseDataService<Basket>, IDataService<Basket>
+    public class UserBasketsService : BaseDataService<Basket>, IDataService<Basket>
     {
-        public BasketsService(ShoppingListDbContext dbContext)
-            : base(dbContext) { }
+        private readonly IQueryable<Basket> _userBasketsQuery;
+
+        public UserBasketsService(ShoppingListDbContext dbContext, ICurrentUserService _currentUser)
+            : base(dbContext)
+        {
+            var userId = _currentUser.GetId();
+            _userBasketsQuery = dbContext.Set<Basket>().Where(b => b.UserId == userId);
+        }
 
         public virtual async Task Add(Basket basket)
         {
@@ -24,13 +30,13 @@ namespace ShoppingList.Services
 
         public virtual async Task<Basket?> Get(Expression<Func<Basket, bool>> filterExpression)
         {
-            return await _dbSet.FirstOrDefaultAsync(filterExpression);
+            return await _userBasketsQuery.FirstOrDefaultAsync(filterExpression);
         }
 
         public virtual async Task<IEnumerable<Basket>> GetMany(Expression<Func<Basket, bool>>? filterExpression = null,
             Func<IQueryable<Basket>, IOrderedQueryable<Basket>>? orderBy = null)
         {
-            var queryable = _dbSet.AsNoTracking();
+            var queryable = _userBasketsQuery;
 
             if (filterExpression != null)
                 queryable = queryable.Where(filterExpression);
@@ -52,7 +58,7 @@ namespace ShoppingList.Services
 
         public virtual async Task<bool> Exists(int id)
         {
-            return await _dbSet.FindAsync(id) != null;
+            return await _userBasketsQuery.FirstOrDefaultAsync(b => b.Id == id) != null;
         }
 
         public virtual async Task Save()

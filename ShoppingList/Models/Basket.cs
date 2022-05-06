@@ -4,8 +4,6 @@ namespace ShoppingList.Models
 {
     public class Basket : EntityBase
     {
-        [Required]
-        public string Name { get; set; } = null!;
         public DayOfWeek? DayEveryWeek { get; set; }
         [DataType(DataType.Date)]
         public DateTime? SpecificDate { get; set; }

@@ -4,11 +4,11 @@ using ShoppingList.Models;
 using ShoppingList.ViewModels;
 using ShoppingList.ViewModels.Basket;
 
-namespace ShoppingList.Controllers
+namespace ShoppingList.Services
 {
-    public class AutoMapperProfile : Profile
+    public class MapperService : Profile
     {
-        public AutoMapperProfile()
+        public MapperService()
         {
             CreateMap<BasketTableViewModel, Basket>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.BasketId));

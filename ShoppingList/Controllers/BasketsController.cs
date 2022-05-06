@@ -11,23 +11,21 @@ namespace ShoppingList.Controllers
 {
     public class BasketsController : Controller
     {
-        private readonly IDataService<Basket> _basketService;
-        private readonly ICurrentUserService _currentUser;
+        private readonly IDataService<Basket> _userBasketsService;
+        private readonly ICurrentUserService _currentUserService;
         private readonly IMapper _mapper;
 
-        public BasketsController(IDataService<Basket> basketService,
-            ICurrentUserService currentUserService, IMapper mapper)
+        public BasketsController(IDataService<Basket> userBasketsService, ICurrentUserService currentUserService, IMapper mapper)
         {
-            _basketService = basketService;
-            _currentUser = currentUserService;
+            _userBasketsService = userBasketsService;
+            _currentUserService = currentUserService;
             _mapper = mapper;
         }
 
         [Authorize]
         public async Task<IActionResult> Index(string? shopName, string? searchString)
         {
-            var baskets = await _basketService.GetMany(b => b.UserId == _currentUser.GetId(),
-                bs => bs.OrderBy(b => b.DayEveryWeek));
+            var baskets = await _userBasketsService.GetMany(orderBy: bs => bs.OrderBy(b => b.DayEveryWeek));
 
             var userShops = (from b in baskets where b.Shops != null select b.Shops)
                 .SelectMany(shops => from s in shops select s.Name);
@@ -52,7 +50,7 @@ namespace ShoppingList.Controllers
         {
             var basket = new BasketCreateViewModel()
             { 
-                UserId = _currentUser.GetId(),
+                UserId = _currentUserService.GetId(),
                 DaysOfWeek = GetDaysOfWeek()
             };
             return View(basket);
@@ -66,8 +64,8 @@ namespace ShoppingList.Controllers
             if (ModelState.IsValid)
             {
                 var basket = _mapper.Map<Basket>(basketVm);
-                await _basketService.Add(basket);
-                await _basketService.Save();
+                await _userBasketsService.Add(basket);
+                await _userBasketsService.Save();
                 return RedirectToAction(nameof(Index));
             }
 
@@ -82,7 +80,7 @@ namespace ShoppingList.Controllers
                 return NotFound();
             }
 
-            var basket = await _basketService.Get(b => b.Id == id);
+            var basket = await _userBasketsService.Get(b => b.Id == id);
 
             if (basket == null)
             {
@@ -109,12 +107,12 @@ namespace ShoppingList.Controllers
                 try
                 {
                     var basket = _mapper.Map<BasketEditViewModel, Basket>(basketVm);
-                    _basketService.Update(basket);
-                    await _basketService.Save();
+                    _userBasketsService.Update(basket);
+                    await _userBasketsService.Save();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!await _basketService.Exists(basketId))
+                    if (!await _userBasketsService.Exists(basketId))
                         return NotFound();
 
                     throw;
@@ -132,7 +130,7 @@ namespace ShoppingList.Controllers
             if (id == null)
                 return NotFound();
 
-            var basket = await _basketService.Get(e => e.Id == id);
+            var basket = await _userBasketsService.Get(e => e.Id == id);
 
             if (basket == null)
                 return NotFound();
@@ -146,7 +144,7 @@ namespace ShoppingList.Controllers
             if (id == null)
                 return NotFound();
 
-            var basket = await _basketService.Get(e => e.Id == id);
+            var basket = await _userBasketsService.Get(e => e.Id == id);
 
             if (basket == null)
                 return NotFound();
@@ -159,13 +157,13 @@ namespace ShoppingList.Controllers
         [ValidateAntiForgeryToken]
         public virtual async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var basket = await _basketService.Get(e => e.Id == id);
+            var basket = await _userBasketsService.Get(e => e.Id == id);
 
             if (basket == null)
                 return NotFound();
 
-            _basketService.Remove(basket);
-            await _basketService.Save();
+            _userBasketsService.Remove(basket);
+            await _userBasketsService.Save();
 
             return RedirectToAction(nameof(Index));
         }
