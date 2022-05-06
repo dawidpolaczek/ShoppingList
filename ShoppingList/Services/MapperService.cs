@@ -30,17 +30,6 @@ namespace ShoppingList.Services
                 .ForMember(dest => dest.DaysOfWeek, opt => opt.MapFrom(src => src.DayEveryWeek));
         }
 
-/*        private static DayOfWeek? MapSelectListToDayOfWeek(SelectList? list)
-        {
-            var selectedItemText = list?.FirstOrDefault(item => item.Selected)?.Text;
-            if (Enum.TryParse(selectedItemText, out DayOfWeek dayOfWeek))
-            {
-                return dayOfWeek;
-            }
-
-            return null;
-        }*/
-
         private static SelectList MapDaysOfWeekToSelectList(DayOfWeek? selectedDayOfWeek)
         {
             var days = Enum.GetValues(typeof(DayOfWeek)).Cast<DayOfWeek>();

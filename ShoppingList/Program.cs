@@ -21,7 +21,7 @@ builder.Services.AddDefaultIdentity<User>(options => {
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-builder.Services.AddScoped<IDataService<Basket>, UserBasketsService>();
+builder.Services.AddScoped<IDataService<Basket>, UserEntityService>();
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 
 var app = builder.Build();
