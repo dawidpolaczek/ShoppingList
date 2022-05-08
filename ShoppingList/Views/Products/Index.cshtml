@@ -1,0 +1,64 @@
+﻿@using System.Globalization
+@model ShoppingList.ViewModels.Product.ProductIndexViewModel
+
+@{
+    ViewData["Title"] = "Products";
+}
+
+
+<h1>Products</h1>
+
+<p>
+    <a class="link-dark" asp-action="Create">Create a product</a>
+</p>
+
+<form asp-controller="Products" asp-action="Index" method="get">
+    <div class="row">
+        <div class="col-sm">
+            <input class="form-control" type="text" asp-for="SearchString" placeholder="product's name" />
+        </div>
+        <div class="col-sm">
+            <input type="submit" value="Search" class="btn btn-secondary" />
+        </div>
+    </div>
+</form>
+
+@if (Model.Products != null && Model.Products.Count > 0)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.Products!.First().Name)</th>
+                <th>@Html.DisplayNameFor(model => model.Products!.First().Description)</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in Model.Products)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(item => product.Name)</td>
+                    <td>@Html.DisplayFor(item => product.Description)</td>
+                    <td>
+                        <div class="btn-group">
+                            <button class="btn btn-secondary btn-sm dropdown-toggle"
+                            type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Action
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" asp-action="Details" asp-route-id=@product.ProductId>Details</a></li>
+                                <li><a class="dropdown-item" asp-action="Edit" asp-route-id=@product.ProductId>Edit</a></li>
+                                <li><a class="dropdown-item" asp-action="Delete" asp-route-id=@product.ProductId>Delete</a></li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No products found.</p>
+}
+

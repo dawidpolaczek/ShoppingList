@@ -1,7 +1,7 @@
 ﻿@model ShoppingList.ViewModels.Basket.BasketDetailsViewModel
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Delete a basket";
 }
 
 <h1>Delete</h1>
@@ -39,7 +39,7 @@
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="BasketId" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <input type="submit" value="Delete" class="btn btn-danger" /> 
+        <a asp-action="Index" class="btn btn-secondary btn-sm">Back to List</a>
     </form>
 </div>

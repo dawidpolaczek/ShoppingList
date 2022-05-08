@@ -6,6 +6,6 @@
 
         // Navigation properties and/or IDs:
         public virtual ICollection<Basket>? Baskets { get; set; }
-        public User? User { get; set; }
+        public virtual User? User { get; set; }
     }
 }

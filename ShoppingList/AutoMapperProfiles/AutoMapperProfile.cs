@@ -4,12 +4,13 @@ using ShoppingList.Helpers;
 using ShoppingList.Models;
 using ShoppingList.ViewModels;
 using ShoppingList.ViewModels.Basket;
+using ShoppingList.ViewModels.Product;
 
-namespace ShoppingList.Services
+namespace ShoppingList.AutoMapperProfiles
 {
-    public class MapperService : Profile
+    public class AutoMapperProfile : Profile
     {
-        public MapperService()
+        public AutoMapperProfile()
         {
             CreateMap<Basket, BasketTableViewModel>()
                 .ForMember(dest => dest.BasketId, opt => opt.MapFrom(src => src.Id))
@@ -29,6 +30,18 @@ namespace ShoppingList.Services
                 .ForMember(dest => dest.DayEveryWeek, opt => opt.MapFrom(
                     src => src.DayEveryWeek != null ? src.DayEveryWeek.ToString() : "undefined"))
                 .ForMember(dest => dest.BasketId, opt => opt.MapFrom(src => src.Id));
+
+            CreateMap<Product, ProductTableViewModel>()
+                .ForMember(dest => dest.ProductId, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.Description, opt => opt.MapFrom(
+                    src => src.Description != null && src.Description.Length > 15 ? src.Description.Substring(0, 16) + "..."
+                    : src.Description ?? "undefined"));
+
+            CreateMap<Product, ProductDetailsViewModel>()
+                .ForMember(dest => dest.ProductId, opt => opt.MapFrom(src => src.Id));
+
+            CreateMap<Product, ProductEditViewModel>()
+                .ForMember(dest => dest.ProductId, opt => opt.MapFrom(src => src.Id));
         }
 
         public static DateTime? GetNextShoppingDate(Basket basket)

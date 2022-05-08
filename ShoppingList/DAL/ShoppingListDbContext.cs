@@ -17,6 +17,12 @@ public class ShoppingListDbContext : IdentityDbContext<User>
         base.OnModelCreating(builder);
     }
 
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        base.OnConfiguring(optionsBuilder);
+        optionsBuilder.UseLazyLoadingProxies();
+    }
+
     public DbSet<Basket> Baskets { get; set; }
     public DbSet<Shop> Shops { get; set; }
     public DbSet<Product> Products { get; set; }

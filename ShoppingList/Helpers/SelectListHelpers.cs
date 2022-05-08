@@ -5,24 +5,45 @@ namespace ShoppingList.Helpers
 {
     public static class SelectListHelpers
     {
-        public static SelectList ToSelectList<TEntity>(this IEnumerable<TEntity> entities,
+        public static MultiSelectList ToMultiSelectList<TEntity>(this IEnumerable<TEntity> entities,
             IEnumerable<TEntity>? selectedEntities = null, Func<TEntity, string>? additionaInfo = null)
+            where TEntity : EntityBase
+        {
+            var entitySelectListItems = entities.Select(e => new SelectListItem()
+            {
+                Text = e.Name + (additionaInfo != null ? additionaInfo(e) : ""),
+                Value = e.Id.ToString(),
+                Selected = true
+            });
+
+            var selectedEntitySelectListItems = selectedEntities?.Select(e => new SelectListItem()
+            {
+                Text = e.Name + (additionaInfo != null ? additionaInfo(e) : ""),
+                Value = e.Id.ToString(),
+            });
+
+            /*
+            return new MultiSelectList(entities.Select(s => new SelectListItem()
+            {
+                Text = s.Name + (additionaInfo != null ? additionaInfo(s) : ""),
+                Value = s.Id.ToString(),
+                Selected = selectedEntities != null && selectedEntities.Any(e => e.Id == s.Id)
+            }), "Value", "Text");
+            */
+
+            return new MultiSelectList(entitySelectListItems, "Value", "Text", selectedEntitySelectListItems);
+        }
+
+        public static SelectList ToSelectList<TEntity>(this IEnumerable<TEntity> entities,
+            TEntity? selectedEntity = null, Func<TEntity, string>? additionaInfo = null)
             where TEntity : EntityBase
         {
             return new SelectList(entities.Select(s => new SelectListItem()
             {
                 Text = s.Name + (additionaInfo != null ? additionaInfo(s) : ""),
                 Value = s.Id.ToString(),
-                Selected = selectedEntities != null && selectedEntities.Contains(s)
+                Selected = selectedEntity?.Id == s.Id
             }), "Value", "Text");
-        }
-
-        public static SelectList ToSelectList<TEntity>(this IEnumerable<TEntity> entities,
-            TEntity? selectedEntity, Func<TEntity, string>? additionaInfo = null)
-            where TEntity : EntityBase
-        {
-            return entities.ToSelectList(selectedEntity != null ? new List<TEntity>() { selectedEntity } : null,
-                additionaInfo);
         }
 
         public static SelectList GetSelectListOfEnum<TEnum>(TEnum? selectedItem = default)

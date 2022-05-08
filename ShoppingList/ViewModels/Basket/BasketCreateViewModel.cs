@@ -27,7 +27,7 @@ namespace ShoppingList.ViewModels.Basket
         public int? SelectedShopId { get; set; }
 
         [Display(Name = "Products")]
-        public SelectList? ProductsList { get; set; }
+        public MultiSelectList? ProductsList { get; set; }
         public IList<int>? SelectedProductsIds { get; set; }
     }
 }

@@ -61,7 +61,7 @@ namespace ShoppingList.Controllers
             var basket = new BasketCreateViewModel()
             {
                 ShopsList = userShops.ToSelectList(additionaInfo: s => s.Address != null ? $", {s.Address}" : ""),
-                ProductsList = userProducts.ToSelectList(),
+                ProductsList = userProducts.ToMultiSelectList(),
             };
 
             return View(basket);
@@ -112,7 +112,7 @@ namespace ShoppingList.Controllers
             var basketVm = _mapper.Map<Basket, BasketEditViewModel>(basket);
             basketVm.ShopsList = userShops.ToSelectList(basket.Shop, s => s.Address != null ? $", {s.Address}" : "");
 
-            basketVm.ProductsList = userProducts.ToSelectList(basket.Products);
+            basketVm.ProductsList = userProducts.ToMultiSelectList(basket.Products);
 
             return View(basketVm);
         }
@@ -134,6 +134,8 @@ namespace ShoppingList.Controllers
                     var basket = await _userBasketsService.Get(b => b.Id == basketVm.BasketId);
                     if (basket == null)
                         return NotFound();
+                    
+                    basket.Products?.Clear();
 
                     basket.Name = basketVm.Name!;
                     basket.DayEveryWeek = basketVm.DayEveryWeek;

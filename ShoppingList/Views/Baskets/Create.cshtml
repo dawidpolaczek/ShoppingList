@@ -21,9 +21,11 @@
 
             <div class="form-group">
                 <label asp-for="ProductsList" class="control-label"></label>
-                <select class="form-control" asp-for="SelectedProductsIds" asp-items="Model.ProductsList" multiple>
+                <select id="products" class="form-control" asp-for="SelectedProductsIds" asp-items="Model.ProductsList" multiple>
                 </select>
                 <span asp-validation-for="SelectedProductsIds" class="text-danger"></span>
+                <a id="select-all" class="btn btn-secondary btn-sm">Select all</a> 
+                <a id="clear" class="btn btn-secondary btn-sm">Clear</a> 
             </div>
 
             <div class="form-group">
@@ -49,14 +51,14 @@
             </div>
 
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-secondary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to baskets</a>
+    <a class="link-dark" asp-action="Index">Back to baskets</a>
 </div>
 
 @section Scripts {
@@ -74,13 +76,29 @@
         });
 
         $(document).on('change', '#DateInput', function(){
-            let dayInput = document.getElementById("DayInput")
-            let dateInput = document.getElementById("DateInput");
+            const dayInput = document.getElementById("DayInput")
+            const dateInput = document.getElementById("DateInput");
 
             if (dateInput.value != "")
                 dayInput.disabled = true;
             else
                 dayInput.disabled = false;
+        });
+
+        $(document).on('click', '#clear', function(){
+            const productOptions = document.querySelectorAll("#products option");
+            for (const opt of productOptions)
+            {
+                opt.selected = false;
+            }
+        });
+
+        $(document).on('click', '#select-all', function(){
+            const productOptions = document.querySelectorAll("#products option");
+            for (const opt of productOptions)
+            {
+                opt.selected = true;
+            }
         });
     </script>
 }

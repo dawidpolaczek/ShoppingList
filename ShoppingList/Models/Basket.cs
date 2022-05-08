@@ -12,6 +12,6 @@ namespace ShoppingList.Models
         public virtual ICollection<Product>? Products { get; set; }
         public int? ShopId { get; set; }
         public virtual Shop? Shop { get; set; }
-        public User? User { get; set; }
+        public virtual User? User { get; set; }
     }
 }
