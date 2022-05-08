@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ShoppingList.ViewModels.Basket
 {
-    public class BasketSearchViewModel
+    public class BasketIndexViewModel
     {
         public IList<BasketTableViewModel>? Baskets { get; set; }
         public SelectList? Shops { get; set; }

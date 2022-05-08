@@ -34,22 +34,22 @@ namespace ShoppingList.Controllers
         [Authorize]
         public async Task<IActionResult> Index(string? shopName, string? searchString)
         {
-            IEnumerable<Basket> baskets = await _userBasketsService.GetMany(orderBy: bs => bs.OrderBy(b => b.DayEveryWeek));
+            IEnumerable<Basket> baskets = await _userBasketsService.GetMany();
 
-            var userShops = baskets.Select(b => b.Shop);
+            var userShops = baskets.Where(b => b.Shop != null).Select(b => b.Shop);
 
             if (!string.IsNullOrEmpty(searchString))
                 baskets = baskets.Where(b => b.Name!.Contains(searchString, StringComparison.OrdinalIgnoreCase));
             if (!string.IsNullOrEmpty(shopName))
                 baskets = baskets.Where(b => b.Shop != null && b.Shop.Name.Equals(shopName, StringComparison.OrdinalIgnoreCase));
 
-            var basketShopViewModel = new BasketSearchViewModel
+            var basketIndexViewModel = new BasketIndexViewModel
             {
-                Baskets = baskets.Select(b => _mapper.Map<BasketTableViewModel>(b)).ToList(),
+                Baskets = baskets.Select(b => _mapper.Map<BasketTableViewModel>(b)).OrderBy(b => b.NextShoppingDate).ToList(),
                 Shops = new SelectList(userShops?.Distinct().ToList())
             };
 
-            return View(basketShopViewModel);
+            return View(basketIndexViewModel);
         }
 
         [Authorize]

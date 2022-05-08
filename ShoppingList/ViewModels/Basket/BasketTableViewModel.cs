@@ -7,8 +7,9 @@ namespace ShoppingList.ViewModels.Basket
         [Display(Name = "Name")]
         public string? Name { get; set; }
 
-        [Display(Name = "Regular shopping day")]
-        public DayOfWeek? DayEveryWeek { get; set; }
+        [Display(Name = "Next shopping date")]
+        [DataType(DataType.Date)]
+        public DateTime? NextShoppingDate { get; set; }
 
         public int BasketId { get; set; }
 
