@@ -184,7 +184,9 @@ namespace ShoppingList.Controllers
             if (basket == null)
                 return NotFound();
 
-            return View(basket);
+            var basketVm = _mapper.Map<Basket, BasketDetailsViewModel>(basket);
+
+            return View(basketVm);
         }
 
         [Authorize]

@@ -34,7 +34,7 @@
         <thead>
             <tr>
                 <th>@Html.DisplayNameFor(model => model.Baskets!.First().Name)</th>
-                <th>@Html.DisplayNameFor(model => model.Baskets!.First().NextShoppingDate)</th>
+                <th>@Html.DisplayNameFor(model => model.Baskets!.First().NextShoppingDateStr)</th>
                 <th>@Html.DisplayNameFor(model => model.Baskets!.First().Size)</th>
                 <th></th>
             </tr>
@@ -44,8 +44,7 @@
             {
                 <tr>
                     <td>@Html.DisplayFor(item => basket.Name)</td>
-                    <td>@(basket.NextShoppingDate != null ? basket.NextShoppingDate.Value.ToString("dd-MM-yyyy")
-                        : "undefined or outdated")</td>
+                    <td>@Html.DisplayFor(item => basket.NextShoppingDateStr)</td>
                     <td>@Html.DisplayFor(item => basket.Size)</td>
                     <td>
                         <div class="btn-group">
@@ -56,7 +55,7 @@
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" asp-action="Details" asp-route-id=@basket.BasketId>Details</a></li>
                                 <li><a class="dropdown-item" asp-action="Edit" asp-route-id=@basket.BasketId>Edit</a></li>
-                                <li><a class="dropdown-item" asp-action="Remove" asp-route-id=@basket.BasketId>Remove</a></li>
+                                <li><a class="dropdown-item" asp-action="Delete" asp-route-id=@basket.BasketId>Delete</a></li>
                             </ul>
                         </div>
                     </td>

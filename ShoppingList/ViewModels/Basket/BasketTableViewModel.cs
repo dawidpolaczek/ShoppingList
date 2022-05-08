@@ -11,6 +11,18 @@ namespace ShoppingList.ViewModels.Basket
         [DataType(DataType.Date)]
         public DateTime? NextShoppingDate { get; set; }
 
+        [Display(Name = "Next shopping date")]
+        public string NextShoppingDateStr
+        {
+            get
+            {
+                if (NextShoppingDate == null)
+                    return "undefined or outdated";
+
+                return NextShoppingDate.Value.ToString("dd-MM-yyyy");
+            }
+        }
+
         public int BasketId { get; set; }
 
         [Display(Name = "Amount of products")]

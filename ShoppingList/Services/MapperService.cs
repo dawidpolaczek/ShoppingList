@@ -23,11 +23,11 @@ namespace ShoppingList.Services
 
             CreateMap<Basket, BasketDetailsViewModel>()
                 .ForMember(dest => dest.ShopName, opt => opt.MapFrom(
-                    src => src.Shop != null ? src.Shop.Name : null))
-                .ForMember(dest => dest.SpecificDate, opt => opt.MapFrom(
-                    src => src.SpecificDate != null ? src.SpecificDate.Value.ToString("yyyy-MM-dd") : null))
+                    src => src.Shop != null ? src.Shop.Name : "undefined"))
+                .ForMember(dest => dest.NextShoppingDate, opt => opt.MapFrom(
+                    src => GetNextShoppingDate(src)))
                 .ForMember(dest => dest.DayEveryWeek, opt => opt.MapFrom(
-                    src => src.DayEveryWeek != null ? src.DayEveryWeek.ToString() : null))
+                    src => src.DayEveryWeek != null ? src.DayEveryWeek.ToString() : "undefined"))
                 .ForMember(dest => dest.BasketId, opt => opt.MapFrom(src => src.Id));
         }
 
@@ -42,7 +42,8 @@ namespace ShoppingList.Services
                 if (basket.SpecificDate == null)
                     return nextDateOfDay;
 
-                return nextDateOfDay < basket.SpecificDate ? nextDateOfDay : basket.SpecificDate;
+                return basket.SpecificDate < nextDateOfDay && basket.SpecificDate >= today ?
+                    basket.SpecificDate : nextDateOfDay;
             }
 
             return basket.SpecificDate < today ? null : basket.SpecificDate;

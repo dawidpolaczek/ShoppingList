@@ -84,7 +84,7 @@ namespace ShoppingList.Services
         private async Task FixEntityName(TEntity entity)
         {
             var equalNameEntity = await Get(e => e.Name == entity.Name);
-            if (equalNameEntity?.Id == entity.Id)
+            if (equalNameEntity?.Id == entity.Id || equalNameEntity == null)
                 return;
 
             int i = 0;

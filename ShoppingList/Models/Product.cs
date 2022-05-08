@@ -3,7 +3,6 @@
     public class Product : EntityBase
     {
         public string? Description { get; set; }
-        public string? Image { get; set; }
 
         // Navigation properties and/or IDs:
         public virtual ICollection<Basket>? Baskets { get; set; }
