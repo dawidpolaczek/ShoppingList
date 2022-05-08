@@ -35,7 +35,7 @@
 
             <div class="form-group">
                 <label asp-for="DaysOfWeek" class="control-label"></label>
-                <select class="form-control" asp-for="DayEveryWeek" asp-items="Model.DaysOfWeek">
+                <select id="DayInput" class="form-control" asp-for="DayEveryWeek" asp-items="Model.DaysOfWeek">
                     <option value="">None</option>
                 </select>
                 <span asp-validation-for="DaysOfWeek" class="text-danger"></span>
@@ -43,7 +43,7 @@
 
             <div class="form-group">
                 <label asp-for="SpecificDate" class="control-label"></label>
-                <input type="date" asp-for="SpecificDate" class="form-control" min="@DateTime.Today.ToString("yyyy-MM-dd")" />
+                <input id="DateInput" type="date" asp-for="SpecificDate" class="form-control" min="@DateTime.Today.ToString("yyyy-MM-dd")" />
                 <span asp-validation-for="SpecificDate" class="text-danger"></span>
             </div>
 
@@ -62,4 +62,32 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script type="text/javascript">
+        $(document).on('change', '#DayInput', function(){
+            let dayInput = document.getElementById("DayInput")
+            let dateInput = document.getElementById("DateInput");
+
+            if (dayInput.options[dayInput.selectedIndex].text != "None")
+            {
+                dateInput.disabled = true;
+                dateInput.value = "";
+            }
+            else
+                dateInput.disabled = false;
+        });
+
+        $(document).on('change', '#DateInput', function(){
+            let dayInput = document.getElementById("DayInput")
+            let dateInput = document.getElementById("DateInput");
+
+            if (dateInput.value != "")
+            {
+                dayInput.disabled = true;
+                dayInput.selectedIndex = 0;
+            }
+            else
+                dayInput.disabled = false;
+        });
+    </script>
 }
