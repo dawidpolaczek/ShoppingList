@@ -8,7 +8,7 @@
 <h1>Baskets</h1>
 
 <p>
-    <a asp-action="Create">Create a basket</a>
+    <a class="link-dark" asp-action="Create">Create a basket</a>
 </p>
 
 <form asp-controller="Baskets" asp-action="Index" method="get">
@@ -46,9 +46,17 @@
                     <td>@Html.DisplayFor(item => basket.DayEveryWeek)</td>
                     <td>@Html.DisplayFor(item => basket.Size)</td>
                     <td>
-                        <a asp-action="Details" asp-route-id=@basket.BasketId>Details</a>
-                        <a asp-action="Edit" asp-route-id=@basket.BasketId>Edit</a>
-                        <a asp-action="Remove" asp-route-id=@basket.BasketId>Remove</a>
+                        <div class="btn-group">
+                            <button class="btn btn-secondary btn-sm dropdown-toggle"
+                            type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Action
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" asp-action="Details" asp-route-id=@basket.BasketId>Details</a></li>
+                                <li><a class="dropdown-item" asp-action="Edit" asp-route-id=@basket.BasketId>Edit</a></li>
+                                <li><a class="dropdown-item" asp-action="Remove" asp-route-id=@basket.BasketId>Remove</a></li>
+                            </ul>
+                        </div>
                     </td>
                 </tr>
             }

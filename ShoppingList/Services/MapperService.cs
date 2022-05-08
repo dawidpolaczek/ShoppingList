@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using ShoppingList.Helpers;
 using ShoppingList.Models;
 using ShoppingList.ViewModels;
 using ShoppingList.ViewModels.Basket;
@@ -10,40 +11,24 @@ namespace ShoppingList.Services
     {
         public MapperService()
         {
-            CreateMap<BasketTableViewModel, Basket>()
-                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.BasketId));
+            CreateMap<Basket, BasketTableViewModel>();
 
             CreateMap<Basket, BasketTableViewModel>()
                 .ForMember(dest => dest.BasketId, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.Size, opt => opt.MapFrom(
                     src => src.Products == null ? 0 : src.Products.Count));
 
-            CreateMap<BasketCreateViewModel, Basket>();
-
-            CreateMap<BasketEditViewModel, Basket>()
-                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.BasketId));
-
-            CreateMap<DayOfWeek?, SelectList>().ConvertUsing(src => MapDaysOfWeekToSelectList(src));
-
             CreateMap<Basket, BasketEditViewModel>()
-                .ForMember(dest => dest.BasketId, opt => opt.MapFrom(src => src.Id))
-                .ForMember(dest => dest.DaysOfWeek, opt => opt.MapFrom(src => src.DayEveryWeek));
-        }
+                .ForMember(dest => dest.BasketId, opt => opt.MapFrom(src => src.Id));
 
-        private static SelectList MapDaysOfWeekToSelectList(DayOfWeek? selectedDayOfWeek)
-        {
-            var days = Enum.GetValues(typeof(DayOfWeek)).Cast<DayOfWeek>();
-            var selectListItems = days
-                .Select(day => new SelectListItem()
-                {
-                    Text = day.ToString(),
-                    Value = ((int)day).ToString(),
-                    Selected = selectedDayOfWeek == day
-                });
-
-            return new SelectList(
-                selectListItems,
-                "Value", "Text");
+            CreateMap<Basket, BasketDetailsViewModel>()
+                .ForMember(dest => dest.ShopName, opt => opt.MapFrom(
+                    src => src.Shop != null ? src.Shop.Name : null))
+                .ForMember(dest => dest.SpecificDate, opt => opt.MapFrom(
+                    src => src.SpecificDate != null ? src.SpecificDate.Value.ToString("yyyy-MM-dd") : null))
+                .ForMember(dest => dest.DayEveryWeek, opt => opt.MapFrom(
+                    src => src.DayEveryWeek != null ? src.DayEveryWeek.ToString() : null))
+                .ForMember(dest => dest.BasketId, opt => opt.MapFrom(src => src.Id));
         }
     }
 }

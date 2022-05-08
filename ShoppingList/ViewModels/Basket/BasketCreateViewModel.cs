@@ -1,17 +1,33 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using ShoppingList.Helpers;
 using ShoppingList.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace ShoppingList.ViewModels.Basket
 {
-    public class BasketCreateViewModel : BasketBasicViewModel
+    public class BasketCreateViewModel
     {
+        [Display(Name = "Name")]
         [Required]
-        public string UserId { get; set; } = null!;
+        [StringLength(40, MinimumLength = 2)]
+        public string? Name { get; set; }
+
+        [Display(Name = "Date")]
+        [DataType(DataType.Date)]
+        public DateTime? SpecificDate { get; set; }
+
+        [Display(Name = "Regular shopping day")]
+        public DayOfWeek? DayEveryWeek { get; set; }
 
         [Display(Name = "Day of the week")]
-        public SelectList? DaysOfWeek { get; set; }
+        public SelectList DaysOfWeek { get => SelectListHelpers.GetSelectListOfEnum<DayOfWeek>(); }
 
-        public SelectList? Shops { get; set; }
+        [Display(Name = "Shop")]
+        public SelectList? ShopsList { get; set; }
+        public int? SelectedShopId { get; set; }
+
+        [Display(Name = "Products")]
+        public SelectList? ProductsList { get; set; }
+        public IList<int>? SelectedProductsIds { get; set; }
     }
 }

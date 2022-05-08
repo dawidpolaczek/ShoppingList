@@ -7,10 +7,11 @@ namespace ShoppingList.Services.Interfaces
         where TEntity : EntityBase
     {
         Task Add(TEntity entity);
-        void Update(TEntity entity);
+        Task Update(TEntity entity);
         Task<TEntity?> Get(Expression<Func<TEntity, bool>> filterExpression);
-        Task<IEnumerable<TEntity>> GetMany(Expression<Func<TEntity, bool>>? filterExpression = null,
+        Task<IList<TEntity>> GetMany(Expression<Func<TEntity, bool>>? filterExpression = null,
             Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null);
+        Task<IList<TEntity>?> GetManyById(ICollection<int>? ids);
         void Remove(TEntity entity);
         void RemoveMany(ICollection<TEntity> entites);
         Task<bool> Exists(int id);

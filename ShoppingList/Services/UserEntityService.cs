@@ -19,11 +19,13 @@ namespace ShoppingList.Services
 
         public virtual async Task Add(TEntity entity)
         {
+            await FixEntityName(entity);
             await _dbContext.AddAsync(entity);
         }
 
-        public virtual void Update(TEntity entity)
+        public virtual async Task Update(TEntity entity)
         {
+            await FixEntityName(entity);
             _dbContext.Update(entity);
         }
 
@@ -32,7 +34,7 @@ namespace ShoppingList.Services
             return await _userEntityService.FirstOrDefaultAsync(filterExpression);
         }
 
-        public virtual async Task<IEnumerable<TEntity>> GetMany(Expression<Func<TEntity, bool>>? filterExpression = null,
+        public virtual async Task<IList<TEntity>> GetMany(Expression<Func<TEntity, bool>>? filterExpression = null,
             Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null)
         {
             var queryable = _userEntityService;
@@ -43,6 +45,13 @@ namespace ShoppingList.Services
                 queryable = orderBy(queryable);
 
             return await queryable.ToListAsync();
+        }
+
+        public virtual async Task<IList<TEntity>?> GetManyById(ICollection<int>? ids)
+        {
+            if (ids == null)
+                return null;
+            return await GetMany(e => ids.Any(id => e.Id == id));
         }
 
         public virtual void Remove(TEntity entity)
@@ -70,6 +79,19 @@ namespace ShoppingList.Services
             {
                 throw;
             }
+        }
+
+        private async Task FixEntityName(TEntity entity)
+        {
+            var equalNameEntity = await Get(e => e.Name == entity.Name);
+            int i = 0;
+            while (equalNameEntity != null)
+            {
+                ++i;
+                equalNameEntity = await Get(e => (entity.Name + $" ({i})") == e.Name);
+            }
+
+            entity.Name = $"{entity.Name} ({i})";
         }
     }
 }

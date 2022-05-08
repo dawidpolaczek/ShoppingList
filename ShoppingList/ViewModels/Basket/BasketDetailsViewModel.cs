@@ -2,17 +2,18 @@
 
 namespace ShoppingList.ViewModels.Basket
 {
-    public class BasketTableViewModel
+    public class BasketDetailsViewModel
     {
         [Display(Name = "Name")]
         public string? Name { get; set; }
 
+        [Display(Name = "Date")]
+        public string? SpecificDate { get; set; }
+
         [Display(Name = "Regular shopping day")]
-        public DayOfWeek? DayEveryWeek { get; set; }
+        public string? DayEveryWeek { get; set; }
 
         public int BasketId { get; set; }
-
-        [Display(Name = "Amount of products")]
-        public int Size { get; set; }
+        public string? ShopName { get; set; }
     }
 }

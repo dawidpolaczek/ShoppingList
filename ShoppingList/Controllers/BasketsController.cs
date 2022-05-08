@@ -6,18 +6,27 @@ using Microsoft.EntityFrameworkCore;
 using ShoppingList.ViewModels.Basket;
 using ShoppingList.Models;
 using ShoppingList.Services.Interfaces;
+using ShoppingList.Helpers;
 
 namespace ShoppingList.Controllers
 {
     public class BasketsController : Controller
     {
         private readonly IDataService<Basket> _userBasketsService;
+        private readonly IDataService<Shop> _userShopsService;
+        private readonly IDataService<Product> _userProductsService;
         private readonly ICurrentUserService _currentUserService;
         private readonly IMapper _mapper;
 
-        public BasketsController(IDataService<Basket> userBasketsService, ICurrentUserService currentUserService, IMapper mapper)
+        public BasketsController(IDataService<Basket> userBasketsService,
+            IDataService<Shop> userShopsService,
+            IDataService<Product> userProductsService,
+            ICurrentUserService currentUserService,
+            IMapper mapper)
         {
             _userBasketsService = userBasketsService;
+            _userShopsService = userShopsService;
+            _userProductsService = userProductsService;
             _currentUserService = currentUserService;
             _mapper = mapper;
         }
@@ -25,16 +34,14 @@ namespace ShoppingList.Controllers
         [Authorize]
         public async Task<IActionResult> Index(string? shopName, string? searchString)
         {
-            var baskets = await _userBasketsService.GetMany(orderBy: bs => bs.OrderBy(b => b.DayEveryWeek));
+            IEnumerable<Basket> baskets = await _userBasketsService.GetMany(orderBy: bs => bs.OrderBy(b => b.DayEveryWeek));
 
-            var userShops = (from b in baskets where b.Shops != null select b.Shops)
-                .SelectMany(shops => from s in shops select s.Name);
+            var userShops = baskets.Select(b => b.Shop);
 
             if (!string.IsNullOrEmpty(searchString))
                 baskets = baskets.Where(b => b.Name!.Contains(searchString, StringComparison.OrdinalIgnoreCase));
             if (!string.IsNullOrEmpty(shopName))
-                baskets = baskets.Where(b => b.Shops?.Any(
-                    s => s.Name.Equals(shopName, StringComparison.OrdinalIgnoreCase)) ?? false);
+                baskets = baskets.Where(b => b.Shop != null && b.Shop.Name.Equals(shopName, StringComparison.OrdinalIgnoreCase));
 
             var basketShopViewModel = new BasketSearchViewModel
             {
@@ -46,13 +53,17 @@ namespace ShoppingList.Controllers
         }
 
         [Authorize]
-        public virtual IActionResult Create()
+        public virtual async Task<IActionResult> Create()
         {
+            var userShops = await _userShopsService.GetMany(orderBy: ss => ss.OrderBy(s => s.Name));
+            var userProducts = await _userProductsService.GetMany(orderBy: ps => ps.OrderBy(s => s.Name));
+
             var basket = new BasketCreateViewModel()
-            { 
-                UserId = _currentUserService.GetId(),
-                DaysOfWeek = GetDaysOfWeek()
+            {
+                ShopsList = userShops.ToSelectList(additionaInfo: s => s.Address != null ? $", {s.Address}" : ""),
+                ProductsList = userProducts.ToSelectList(),
             };
+
             return View(basket);
         }
 
@@ -63,7 +74,15 @@ namespace ShoppingList.Controllers
         {
             if (ModelState.IsValid)
             {
-                var basket = _mapper.Map<Basket>(basketVm);
+                var basket = new Basket()
+                {
+                    Name = basketVm.Name!,
+                    DayEveryWeek = basketVm.DayEveryWeek,
+                    SpecificDate = basketVm.SpecificDate,
+                    Products = await _userProductsService.GetManyById(basketVm.SelectedProductsIds),
+                    Shop = await _userShopsService.Get(s => s.Id == basketVm.SelectedShopId),
+                    UserId = _currentUserService.GetId(),
+                };
                 await _userBasketsService.Add(basket);
                 await _userBasketsService.Save();
                 return RedirectToAction(nameof(Index));
@@ -87,7 +106,13 @@ namespace ShoppingList.Controllers
                 return NotFound();
             }
 
+            var userShops = await _userShopsService.GetMany(orderBy: ss => ss.OrderBy(s => s.Name));
+            var userProducts = await _userProductsService.GetMany(orderBy: ps => ps.OrderBy(s => s.Name));
+
             var basketVm = _mapper.Map<Basket, BasketEditViewModel>(basket);
+            basketVm.ShopsList = userShops.ToSelectList(basket.Shop, s => s.Address != null ? $", {s.Address}" : "");
+
+            basketVm.ProductsList = userProducts.ToSelectList(basket.Products);
 
             return View(basketVm);
         }
@@ -106,8 +131,16 @@ namespace ShoppingList.Controllers
             {
                 try
                 {
-                    var basket = _mapper.Map<BasketEditViewModel, Basket>(basketVm);
-                    _userBasketsService.Update(basket);
+                    var basket = await _userBasketsService.Get(b => b.Id == basketVm.BasketId);
+                    if (basket == null)
+                        return NotFound();
+
+                    basket.Name = basketVm.Name!;
+                    basket.DayEveryWeek = basketVm.DayEveryWeek;
+                    basket.SpecificDate = basketVm.SpecificDate;
+                    basket.Products = await _userProductsService.GetManyById(basketVm.SelectedProductsIds);
+                    basket.ShopId = basketVm.SelectedShopId;
+                    await _userBasketsService.Update(basket);
                     await _userBasketsService.Save();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -135,7 +168,9 @@ namespace ShoppingList.Controllers
             if (basket == null)
                 return NotFound();
 
-            return View(basket);
+            var basketVm = _mapper.Map<Basket, BasketDetailsViewModel>(basket);
+
+            return View(basketVm);
         }
 
         [Authorize]
@@ -166,23 +201,6 @@ namespace ShoppingList.Controllers
             await _userBasketsService.Save();
 
             return RedirectToAction(nameof(Index));
-        }
-
-        // temporary
-        private static SelectList GetDaysOfWeek(DayOfWeek? selectedDayOfWeek = null)
-        {
-            var days = Enum.GetValues(typeof(DayOfWeek)).Cast<DayOfWeek>();
-            var selectListItems = days
-                .Select(day => new SelectListItem()
-                {
-                    Text = day.ToString(),
-                    Value = ((int)day).ToString(),
-                    Selected = selectedDayOfWeek == day
-                });
-
-            return new SelectList(
-                selectListItems,
-                "Value", "Text");
         }
     }
 }
