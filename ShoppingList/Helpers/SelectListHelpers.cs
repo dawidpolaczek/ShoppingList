@@ -16,20 +16,7 @@ namespace ShoppingList.Helpers
                 Selected = true
             });
 
-            var selectedEntitySelectListItems = selectedEntities?.Select(e => new SelectListItem()
-            {
-                Text = e.Name + (additionaInfo != null ? additionaInfo(e) : ""),
-                Value = e.Id.ToString(),
-            });
-
-            /*
-            return new MultiSelectList(entities.Select(s => new SelectListItem()
-            {
-                Text = s.Name + (additionaInfo != null ? additionaInfo(s) : ""),
-                Value = s.Id.ToString(),
-                Selected = selectedEntities != null && selectedEntities.Any(e => e.Id == s.Id)
-            }), "Value", "Text");
-            */
+            var selectedEntitySelectListItems = selectedEntities?.Select(e => e.Id).ToArray();
 
             return new MultiSelectList(entitySelectListItems, "Value", "Text", selectedEntitySelectListItems);
         }
@@ -38,12 +25,15 @@ namespace ShoppingList.Helpers
             TEntity? selectedEntity = null, Func<TEntity, string>? additionaInfo = null)
             where TEntity : EntityBase
         {
-            return new SelectList(entities.Select(s => new SelectListItem()
+            var entitySelectListItems = entities.Select(s => new SelectListItem()
             {
                 Text = s.Name + (additionaInfo != null ? additionaInfo(s) : ""),
                 Value = s.Id.ToString(),
-                Selected = selectedEntity?.Id == s.Id
-            }), "Value", "Text");
+            });
+
+            int? selectedValue = selectedEntity?.Id;
+
+            return new SelectList(entitySelectListItems, "Value", "Text", selectedValue);
         }
 
         public static SelectList GetSelectListOfEnum<TEnum>(TEnum? selectedItem = default)
