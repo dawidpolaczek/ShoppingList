@@ -1,12 +1,12 @@
-﻿@model ShoppingList.ViewModels.Product.ProductEditViewModel
+﻿@model ShoppingList.ViewModels.Shop.ShopEditViewModel
 
 @{
-    ViewData["Title"] = "Edit a product";
+    ViewData["Title"] = "Edit a shop";
 }
 
 <h1>Edit</h1>
 
-<h4>Product</h4>
+<h4>Shop</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -19,12 +19,12 @@
             </div>
 
             <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <textarea asp-for="Description" class="form-control" rows="3"></textarea>
-                <span asp-validation-for="Description" class="text-danger"></span>
+                <label asp-for="Address" class="control-label"></label>
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
             </div>
 
-            <input type="hidden" asp-for="ProductId"/>
+            <input type="hidden" asp-for="ShopId"/>
 
             <div class="form-group">
                 <input type="submit" value="Edit" class="btn btn-secondary" />
@@ -34,7 +34,7 @@
 </div>
 
 <div>
-    <a class="link-dark" asp-action="Index">Back to products</a>
+    <a class="link-dark" asp-action="Index">Back to shops</a>
 </div>
 
 @section Scripts {

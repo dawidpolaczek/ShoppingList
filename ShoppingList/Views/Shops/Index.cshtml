@@ -1,0 +1,64 @@
+﻿@using System.Globalization
+@model ShoppingList.ViewModels.Shop.ShopIndexViewModel
+
+@{
+    ViewData["Title"] = "Shops";
+}
+
+
+<h1>Shops</h1>
+
+<p>
+    <a class="link-dark" asp-action="Create">Create a shop</a>
+</p>
+
+<form asp-controller="Shops" asp-action="Index" method="get">
+    <div class="row">
+        <div class="col-sm">
+            <input class="form-control" type="text" asp-for="SearchString" placeholder="shop's name" />
+        </div>
+        <div class="col-sm">
+            <input type="submit" value="Search" class="btn btn-secondary" />
+        </div>
+    </div>
+</form>
+
+@if (Model.Shops != null && Model.Shops.Count > 0)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.Shops!.First().Name)</th>
+                <th>@Html.DisplayNameFor(model => model.Shops!.First().Address)</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var shop in Model.Shops)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(item => shop.Name)</td>
+                    <td>@Html.DisplayFor(item => shop.Address)</td>
+                    <td>
+                        <div class="btn-group">
+                            <button class="btn btn-secondary btn-sm dropdown-toggle"
+                            type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Action
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" asp-action="Details" asp-route-id=@shop.ShopId>Show details</a></li>
+                                <li><a class="dropdown-item" asp-action="Edit" asp-route-id=@shop.ShopId>Edit</a></li>
+                                <li><a class="dropdown-item" asp-action="Delete" asp-route-id=@shop.ShopId>Delete</a></li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No shops found.</p>
+}
+

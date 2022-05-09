@@ -5,6 +5,7 @@ using ShoppingList.Models;
 using ShoppingList.ViewModels;
 using ShoppingList.ViewModels.Basket;
 using ShoppingList.ViewModels.Product;
+using ShoppingList.ViewModels.Shop;
 
 namespace ShoppingList.AutoMapperProfiles
 {
@@ -23,13 +24,15 @@ namespace ShoppingList.AutoMapperProfiles
                 .ForMember(dest => dest.BasketId, opt => opt.MapFrom(src => src.Id));
 
             CreateMap<Basket, BasketDetailsViewModel>()
-                .ForMember(dest => dest.ShopName, opt => opt.MapFrom(
-                    src => src.Shop != null ? src.Shop.Name : "undefined"))
+                .ForMember(dest => dest.Shop, opt => opt.MapFrom(
+                    src => src.Shop != null ? new Tuple<int, string>(src.Shop.Id, src.Shop.Name) : null))
                 .ForMember(dest => dest.NextShoppingDate, opt => opt.MapFrom(
                     src => GetNextShoppingDate(src)))
                 .ForMember(dest => dest.DayEveryWeek, opt => opt.MapFrom(
                     src => src.DayEveryWeek != null ? src.DayEveryWeek.ToString() : "undefined"))
-                .ForMember(dest => dest.BasketId, opt => opt.MapFrom(src => src.Id));
+                .ForMember(dest => dest.BasketId, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.Products, opt => opt.MapFrom(
+                    src => src.Products != null ? src.Products.Select(p => new Tuple<int, string>(p.Id, p.Name)) : null));
 
             CreateMap<Product, ProductTableViewModel>()
                 .ForMember(dest => dest.ProductId, opt => opt.MapFrom(src => src.Id))
@@ -42,6 +45,14 @@ namespace ShoppingList.AutoMapperProfiles
 
             CreateMap<Product, ProductEditViewModel>()
                 .ForMember(dest => dest.ProductId, opt => opt.MapFrom(src => src.Id));
+
+            
+            CreateMap<Shop, ShopTableViewModel>()
+                .ForMember(dest => dest.ShopId, opt => opt.MapFrom(src => src.Id));
+            CreateMap<Shop, ShopEditViewModel>()
+                .ForMember(dest => dest.ShopId, opt => opt.MapFrom(src => src.Id));
+            CreateMap<Shop, ShopDetailsViewModel>()
+                .ForMember(dest => dest.ShopId, opt => opt.MapFrom(src => src.Id));
         }
 
         public static DateTime? GetNextShoppingDate(Basket basket)

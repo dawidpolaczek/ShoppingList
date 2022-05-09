@@ -1,5 +1,5 @@
 ﻿@using System.Globalization
-@model ShoppingList.ViewModels.Product.ProductDetailsViewModel
+@model ShoppingList.ViewModels.Shop.ShopDetailsViewModel
 
 @{
     ViewData["Title"] = "Details";
@@ -8,7 +8,7 @@
 <h1>Details</h1>
 
 <div>
-    <h4>Product</h4>
+    <h4>Shop</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -18,14 +18,14 @@
             @Html.DisplayFor(model => model.Name)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
+            @Html.DisplayNameFor(model => model.Address)
         </dt>
         <dd class = "col-sm-10">
-            <textarea rows="3" readonly>@Html.DisplayFor(model => model.Description)</textarea>
+            @Html.DisplayFor(model => model.Address)
         </dd>
     </dl>
 </div>
 <div>
-    <a class="btn btn-secondary btn-sm" asp-action="Edit" asp-route-id="@Model?.ProductId">Edit</a> 
-    <a class="btn btn-secondary btn-sm" asp-action="Index">Back to products</a>
+    <a class="btn btn-secondary btn-sm" asp-action="Edit" asp-route-id="@Model?.ShopId">Edit</a> 
+    <a class="btn btn-secondary btn-sm" asp-action="Index">Back to shops</a>
 </div>

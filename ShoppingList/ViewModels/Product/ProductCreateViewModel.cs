@@ -10,7 +10,6 @@ namespace ShoppingList.ViewModels.Product
         public string? Name { get; set; }
 
         [Display(Name = "Description")]
-        [Required]
         [StringLength(300, MinimumLength = 2)]
         public string? Description { get; set; }
     }

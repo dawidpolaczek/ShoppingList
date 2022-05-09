@@ -27,6 +27,11 @@ namespace ShoppingList.ViewModels.Basket
         public string? DayEveryWeek { get; set; }
 
         public int BasketId { get; set; }
-        public string? ShopName { get; set; }
+
+        [Display(Name = "Shop")]
+        public Tuple<int, string>? Shop { get; set; }
+
+        [Display(Name = "Products")]
+        public IEnumerable<Tuple<int, string>>? Products { get; set; }
     }
 }
